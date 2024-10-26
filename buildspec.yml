@@ -32,3 +32,4 @@ artifacts:
 cache:
   paths:
     - "server/node_modules/**/*"  # node_modules 캐싱
+
