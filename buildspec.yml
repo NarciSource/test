@@ -18,6 +18,7 @@ phases:
   build:
     commands:
       - echo "Building the Docker image..."
+      - cd ..
       - docker build -t my-express-app .  # Docker 이미지 빌드
       - docker tag my-express-app:latest public.ecr.aws/n5i2p1p8/test/test  # ECR 태그 추가
 
