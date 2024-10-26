@@ -5,24 +5,25 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - echo "설치"
-      - cd server
+      - echo "Moving to server directory..."
+      - cd server  # server 폴더로 이동
+      - echo "Installing dependencies..."
       - npm install
 
   build:
     commands:
-      - echo "빌드"
-      - npm run build:
+      - echo "Building the project..."
+      - npm run build
 
   post_build:
     commands:
-      - echo "빌드 성공"
-      
+      - echo "Build complete!"
+
 artifacts:
   files:
-    - "dist/**"          # 빌드 결과물
-    - "config/*.json"    # 설정 파일
+    - "server/dist/**"          # 빌드 결과물
+    - "server/config/*.json"    # 설정 파일
 
 cache:
   paths:
-    - "node_modules/**/*"  # node_modules 캐싱
+    - "server/node_modules/**/*"  # node_modules 캐싱
