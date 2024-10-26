@@ -3,21 +3,31 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      docker: 20  # Docker 버전 설정
     commands:
-      - echo "Moving to server directory..."
-      - cd server  # server 폴더로 이동
       - echo "Installing dependencies..."
-      - npm install
+      - cd server
+      - npm install --production  # 필요한 의존성만 설치
+
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - $(aws ecr get-login --no-include-email --region ap-northeast-2)  # ECR 로그인
+
+  build:
+    commands:
+      - echo "Building the Docker image..."
+      - docker build -t my-express-app .  # Docker 이미지 빌드
+      - docker tag my-express-app:latest public.ecr.aws/n5i2p1p8/test/test  # ECR 태그 추가
 
   post_build:
     commands:
-      - echo "Build complete!"
+      - echo "Pushing the Docker image to Amazon ECR..."
+      - docker push public.ecr.aws/n5i2p1p8/test/test  # Docker 이미지 푸시
 
 artifacts:
   files:
-    - "server/dist/**"          # 빌드 결과물
-    - "server/config/*.json"    # 설정 파일
+    - "server/dist/**"          # 빌드 결과물 (필요한 경우)
 
 cache:
   paths:
